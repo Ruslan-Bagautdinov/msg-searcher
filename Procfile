@@ -1,1 +1,1 @@
-web: python searcher.py
+worker: python searcher.py
