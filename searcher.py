@@ -1,4 +1,3 @@
-import tgcrypto
 from pyrogram import Client, filters
 import re
 
