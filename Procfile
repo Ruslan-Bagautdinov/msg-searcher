@@ -1,1 +1,1 @@
-web: python main_bot.py
+web: python searcher.py
