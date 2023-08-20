@@ -1,6 +1,5 @@
 from pyrogram import Client, filters
 import re
-from os import getenv
 
 from icecream import ic
 
@@ -9,46 +8,13 @@ from bot_creator import APP_NAME, SESSION_STRING
 
 from sender import send_to_group
 
+from key_words import CHATS, KEY_WORDS, BLACK_LIST
 
-chats = ['test_Alexandra_Exchange',
-         '+jzWUJ4kYorQ4YWI6',
-         'AlanyaVse',
-         'alanya_chat_2',
-         'alaniya_chat_kg',
-         'alanyachat_cho',
-         'alanya_bestchat',
-         'alanyamahmutlargazipasa',
-         'alanya_2022',
-         'alaniyalife',
-         'alanyaru',
-         'alanya_forum',
-         'alanya_profi',
-         'alanya_top',
-         'chatalanya_turkey',
-         'globe_alaniya_chat',
-         'mahmutlarrussia',
-         'mahmutlarru_chat',
-         'mahmutlarru',
-         'mamochkanamore',
-         'mahmutlar_online',
-         'Vmeste_Alanya'
-         ]
 
-key_words = ['обмен', 'наличн', 'помен', 'рубл', 'курс', 'перевод', 'валют']
+key_words_filter = filters.regex(f"({'|'.join(KEY_WORDS)})", flags=re.IGNORECASE)
+black_list_filter = f"({'|'.join(BLACK_LIST)})"
 
-black_list = ['Добро пожаловать в наш чат',
-              'в курсе',
-              'конкурс'
-              'переводчик',
-              'устный перевод',
-              'заработ',
-              'заходите на канал',
-              'Капуста']
-
-key_words_filter = filters.regex(f"({'|'.join(key_words)})", flags=re.IGNORECASE)
-black_list_filter = f"({'|'.join(black_list)})"
-
-chat_filter = filters.chat(chats) & filters.text & key_words_filter
+chat_filter = filters.chat(CHATS) & filters.text & key_words_filter
 
 
 def searcher_main():
