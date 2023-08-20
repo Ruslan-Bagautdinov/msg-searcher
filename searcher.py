@@ -19,9 +19,9 @@ chat_filter = filters.chat(CHATS) & filters.text & key_words_filter
 
 def searcher_main():
 
-    print('Starting...')
+    print('* * * Starting... * * *')
     app = Client(name=APP_NAME, session_string=SESSION_STRING, in_memory=True)
-    print('* STARTED SUCCESSFULLY *')
+    print('* * * STARTED SUCCESSFULLY ! * * *')
 
     @app.on_message(chat_filter)
     async def send_link(client, message):
@@ -46,7 +46,7 @@ def searcher_main():
             await send_to_group(message_for_bot)
 
     app.run()
-    print('... Pyrogram App Closed ...')
+    print('* * * Pyrogram App Closed * * *')
 
 
 if __name__ == "__main__":
