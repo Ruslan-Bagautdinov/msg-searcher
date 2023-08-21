@@ -9,10 +9,18 @@ from bot_creator import APP_NAME, SESSION_STRING
 from sender import send_to_group
 
 from key_words import CHATS, KEY_WORDS, BLACK_LIST
+from trie import Trie
 
 
 key_words_filter = filters.regex(f"({'|'.join(KEY_WORDS)})", flags=re.IGNORECASE)
-black_list_filter = f"({'|'.join(BLACK_LIST)})"
+
+black_trie = Trie()
+
+for word in sorted(BLACK_LIST):
+    black_trie.add(word)
+
+# black_list_filter = f"({'|'.join(BLACK_LIST)})"
+black_list_filter = black_trie.pattern()
 
 chat_filter = filters.chat(CHATS) & filters.text & key_words_filter
 
