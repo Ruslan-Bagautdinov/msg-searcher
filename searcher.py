@@ -45,7 +45,7 @@ def searcher_main():
     print('* * * STARTED SUCCESSFULLY ! * * *')
 
     @app.on_message(chat_filter_money)
-    async def send_money(client, message):
+    async def find_money(client, message):
 
         if re.search(white_money_filter, message.text, re.IGNORECASE):
 
@@ -69,7 +69,7 @@ def searcher_main():
                 await send_money(message_for_bot)
 
     @app.on_message(chat_filter_estate)
-    async def send_estate(client, message):
+    async def find_estate(client, message):
 
         if re.search(white_estate_filter, message.text, re.IGNORECASE):
 
