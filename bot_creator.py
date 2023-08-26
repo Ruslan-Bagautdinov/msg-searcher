@@ -5,16 +5,18 @@ SERVER = getenv('SERVER', False)
 
 if SERVER:
     BOT_TOKEN = getenv('BOT_TOKEN')
-    GROUP_CHAT_ID = getenv('GROUP_CHAT_ID')
     APP_NAME = getenv('APP_NAME')
     SESSION_STRING = getenv('SESSION_STRING')
+    MONEY_CHAT_ID = getenv('GROUP_CHAT_ID')
+    ESTATE_CHAT_ID = getenv('GROUP_CHAT_ID')
 
 else:
-    from config import BOT_TOKEN, GROUP_CHAT_ID, APP_NAME, SESSION_STRING
+    from config import *
     BOT_TOKEN = BOT_TOKEN
-    GROUP_CHAT_ID = GROUP_CHAT_ID
     APP_NAME = APP_NAME
     SESSION_STRING = SESSION_STRING
+    MONEY_CHAT_ID = MONEY_CHAT_ID
+    ESTATE_CHAT_ID = ESTATE_CHAT_ID
 
 bot = Bot(
           token=BOT_TOKEN
