@@ -38,7 +38,26 @@ black_estate_filter = black_trie_estate.pattern()
 chat_filter_money = filters.chat(CHATS_MONEY) & filters.text & key_money_filter
 chat_filter_estate = filters.chat(CHATS_ESTATE) & filters.text & key_estate_filter
 
+
 def searcher_main():
+    
+    def message_proceed(message):
+
+        message_for_bot = ''
+        message_for_bot += f'{message.link}\n'
+        message_for_bot += f'{message.text}\n'
+
+        if message.chat.title:
+            message_for_bot += f'Username: {message.chat.title}\n'
+        if message.from_user.username:
+            message_for_bot += f'Username: {message.from_user.username}\n'
+        if message.from_user.first_name:
+            message_for_bot += f'First_name: {message.from_user.first_name}\n'
+        if message.from_user.last_name:
+            message_for_bot += f'Last_name: {message.from_user.last_name}\n'
+        if message.from_user.phone_number:
+            message_for_bot += f'Phone_number: {message.from_user.phone_number}\n'
+        return message_for_bot
 
     print('* * * Starting... * * *')
     app = Client(name=APP_NAME, session_string=SESSION_STRING, in_memory=True)
@@ -53,20 +72,8 @@ def searcher_main():
                 ic(message.text)
                 pass
             else:
-                message_for_bot = ''
-                message_for_bot += f'{message.link}\n'
-                message_for_bot += f'{message.text}\n'
-
-                if message.from_user.username:
-                    message_for_bot += f'Username: {message.from_user.username}\n'
-                if message.from_user.first_name:
-                    message_for_bot += f'First_name: {message.from_user.first_name}\n'
-                if message.from_user.last_name:
-                    message_for_bot += f'Last_name: {message.from_user.last_name}\n'
-                if message.from_user.phone_number:
-                    message_for_bot += f'Phone_number: {message.from_user.phone_number}\n'
-
-                await send_money(message_for_bot)
+                money_message = message_proceed(message)
+                await send_money(money_message)
 
     @app.on_message(chat_filter_estate)
     async def find_estate(client, message):
@@ -77,20 +84,8 @@ def searcher_main():
                 ic(message.text)
                 pass
             else:
-                message_for_bot = ''
-                message_for_bot += f'{message.link}\n'
-                message_for_bot += f'{message.text}\n'
-
-                if message.from_user.username:
-                    message_for_bot += f'Username: {message.from_user.username}\n'
-                if message.from_user.first_name:
-                    message_for_bot += f'First_name: {message.from_user.first_name}\n'
-                if message.from_user.last_name:
-                    message_for_bot += f'Last_name: {message.from_user.last_name}\n'
-                if message.from_user.phone_number:
-                    message_for_bot += f'Phone_number: {message.from_user.phone_number}\n'
-
-                await send_estate(message_for_bot)
+                estate_message = message_proceed(message)
+                await send_estate(estate_message)
 
     app.run()
     print('* * * Pyrogram App Closed * * *')
