@@ -48,7 +48,7 @@ def searcher_main():
         message_for_bot += f'{message.text}\n'
 
         if message.chat.title:
-            message_for_bot += f'Username: {message.chat.title}\n'
+            message_for_bot += f'Chat: {message.chat.title}\n'
         if message.from_user.username:
             message_for_bot += f'Username: {message.from_user.username}\n'
         if message.from_user.first_name:
