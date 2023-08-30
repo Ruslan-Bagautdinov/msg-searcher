@@ -25,7 +25,8 @@ CHATS_ESTATE = ['alania_forlife',
                 'alanya_profi',
                 'globe_nedvizhka_alaniya',
                 'rabotavturkish',
-                'Alanyachat_turkey_mahmutlar_oba'
+                'Alanyachat_turkey_mahmutlar_oba',
+                'test_Alexandra_Exchange'
                 ]
 
 KEY_ESTATE = ['покуп',
