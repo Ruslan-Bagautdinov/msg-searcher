@@ -70,7 +70,6 @@ def searcher_main():
 
             if re.search(black_money_filter, message.text, re.IGNORECASE):
                 ic(message.text)
-                pass
             else:
                 money_message = message_proceed(message)
                 await send_money(money_message)
@@ -82,7 +81,6 @@ def searcher_main():
 
             if re.search(black_estate_filter, message.text, re.IGNORECASE):
                 ic(message.text)
-                pass
             else:
                 estate_message = message_proceed(message)
                 await send_estate(estate_message)
