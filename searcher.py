@@ -1,15 +1,17 @@
 from pyrogram import Client, filters
 import re
 
-from icecream import ic
-
 # own imports
 from bot_creator import APP_NAME, SESSION_STRING
 
 from sender import send_money, send_estate
 
-from key_money import CHATS_MONEY, KEY_MONEY, WHITE_MONEY, BLACK_MONEY
-from key_estate import CHATS_ESTATE, KEY_ESTATE, WHITE_ESTATE, BLACK_ESTATE
+from chats_money import CHATS_MONEY
+from key_money import KEY_MONEY, WHITE_MONEY, BLACK_MONEY
+
+from chats_estate import CHATS_ESTATE
+from key_estate import KEY_ESTATE, WHITE_ESTATE, BLACK_ESTATE
+
 from trie import Trie
 
 
@@ -69,7 +71,7 @@ def searcher_main():
         if re.search(white_money_filter, message.text, re.IGNORECASE):
 
             if re.search(black_money_filter, message.text, re.IGNORECASE):
-                ic(message.text)
+                pass
             else:
                 money_message = message_proceed(message)
                 await send_money(money_message)
@@ -80,7 +82,7 @@ def searcher_main():
         if re.search(white_estate_filter, message.text, re.IGNORECASE):
 
             if re.search(black_estate_filter, message.text, re.IGNORECASE):
-                ic(message.text)
+                pass
             else:
                 estate_message = message_proceed(message)
                 await send_estate(estate_message)

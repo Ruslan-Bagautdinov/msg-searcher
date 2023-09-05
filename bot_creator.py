@@ -1,14 +1,14 @@
 from aiogram import Bot
-from os import getenv
+from os import environ
 
-SERVER = getenv('SERVER', False)
+SERVER = environ.get('SERVER', default=False)
 
 if SERVER:
-    BOT_TOKEN = getenv('BOT_TOKEN')
-    APP_NAME = getenv('APP_NAME')
-    SESSION_STRING = getenv('SESSION_STRING')
-    MONEY_CHAT_ID = getenv('MONEY_CHAT_ID')
-    ESTATE_CHAT_ID = getenv('ESTATE_CHAT_ID')
+    BOT_TOKEN = environ.get('BOT_TOKEN')
+    APP_NAME = environ.get('APP_NAME')
+    SESSION_STRING = environ.get('SESSION_STRING')
+    MONEY_CHAT_ID = environ.get('MONEY_CHAT_ID')
+    ESTATE_CHAT_ID = environ.get('ESTATE_CHAT_ID')
 
 else:
     from config import *
