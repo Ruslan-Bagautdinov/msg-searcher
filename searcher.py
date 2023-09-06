@@ -8,7 +8,6 @@ from sender import send_money, send_estate
 
 from chats_money import CHATS_MONEY
 from key_money import KEY_MONEY, WHITE_MONEY, BLACK_MONEY
-
 from chats_estate import CHATS_ESTATE
 from key_estate import KEY_ESTATE, WHITE_ESTATE, BLACK_ESTATE
 
