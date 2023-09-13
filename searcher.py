@@ -44,8 +44,6 @@ key_estate_filter, white_estate_filter, black_estate_filter = create_filters(KEY
 chat_filter_money = filters.chat(CHATS_MONEY) & filters.text & key_money_filter
 chat_filter_estate = filters.chat(CHATS_ESTATE) & filters.text & key_estate_filter
 
-last_message = LastMessage()
-
 
 def searcher_main():
     
@@ -69,6 +67,7 @@ def searcher_main():
 
     print('* * * Starting... * * *')
     app = Client(name=APP_NAME, session_string=SESSION_STRING, in_memory=True)
+    last_message = LastMessage()
     print('* * * STARTED SUCCESSFULLY ! * * *')
 
     @app.on_message(chat_filter_money)
