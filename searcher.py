@@ -81,7 +81,7 @@ def searcher_main():
             elif message.text == last_message.last_message_money:
                 pass
             else:
-                message.text = last_message.last_message_money
+                last_message.last_message_money = message.text
                 money_message = message_proceed(message)
                 await send_money(money_message)
 
@@ -95,7 +95,7 @@ def searcher_main():
             elif message.text == last_message.last_message_estate:
                 pass
             else:
-                message.text = last_message.last_message_estate
+                last_message.last_message_estate = message.text
                 estate_message = message_proceed(message)
                 await send_estate(estate_message)
 
