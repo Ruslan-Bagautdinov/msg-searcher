@@ -14,30 +14,37 @@ from key_estate import KEY_ESTATE, WHITE_ESTATE, BLACK_ESTATE
 from trie import Trie
 
 
-key_money_filter = filters.regex(f"({'|'.join(KEY_MONEY)})", flags=re.IGNORECASE)
-key_estate_filter = filters.regex(f"({'|'.join(KEY_ESTATE)})", flags=re.IGNORECASE)
+class LastMessage:
+    def __init__(self):
+        self.last_message_money = 'last_message_money'
+        self.last_message_estate = 'last_message_estate'
 
-white_trie_money = Trie()
-black_trie_money = Trie()
-for word in sorted(WHITE_MONEY):
-    white_trie_money.add(word)
-for word in sorted(BLACK_MONEY):
-    black_trie_money.add(word)
-white_money_filter = white_trie_money.pattern()
-black_money_filter = black_trie_money.pattern()
 
-white_trie_estate = Trie()
-black_trie_estate = Trie()
-for word in sorted(WHITE_ESTATE):
-    white_trie_estate.add(word)
-for word in sorted(BLACK_ESTATE):
-    black_trie_estate.add(word)
-white_estate_filter = white_trie_estate.pattern()
-black_estate_filter = black_trie_estate.pattern()
+def create_filters(key_list, white_list, black_list):
 
+    key_filter = filters.regex(f"({'|'.join(key_list)})", flags=re.IGNORECASE)
+
+    white_trie = Trie()
+    black_trie = Trie()
+
+    for word in sorted(white_list):
+        white_trie.add(word)
+    for word in sorted(black_list):
+        black_trie.add(word)
+
+    white_filter = white_trie.pattern()
+    black_filter = black_trie.pattern()
+
+    return key_filter, white_filter, black_filter
+
+
+key_money_filter, white_money_filter, black_money_filter = create_filters(KEY_MONEY, WHITE_MONEY, BLACK_MONEY)
+key_estate_filter, white_estate_filter, black_estate_filter = create_filters(KEY_ESTATE, WHITE_ESTATE, BLACK_ESTATE)
 
 chat_filter_money = filters.chat(CHATS_MONEY) & filters.text & key_money_filter
 chat_filter_estate = filters.chat(CHATS_ESTATE) & filters.text & key_estate_filter
+
+last_message = LastMessage()
 
 
 def searcher_main():
@@ -71,7 +78,10 @@ def searcher_main():
 
             if re.search(black_money_filter, message.text, re.IGNORECASE):
                 pass
+            elif message.text == last_message.last_message_money:
+                pass
             else:
+                message.text = last_message.last_message_money
                 money_message = message_proceed(message)
                 await send_money(money_message)
 
@@ -82,7 +92,10 @@ def searcher_main():
 
             if re.search(black_estate_filter, message.text, re.IGNORECASE):
                 pass
+            elif message.text == last_message.last_message_estate:
+                pass
             else:
+                message.text = last_message.last_message_estate
                 estate_message = message_proceed(message)
                 await send_estate(estate_message)
 
