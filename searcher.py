@@ -1,10 +1,13 @@
 from pyrogram import Client, filters
+from aiogram import Bot
 import re
 
 # own imports
-from bot_creator import APP_NAME, SESSION_STRING
-
-from sender import send_money, send_estate
+from config import (APP_NAME,
+                    BOT_TOKEN,
+                    SESSION_STRING,
+                    MONEY_CHAT_ID,
+                    ESTATE_CHAT_ID)
 
 from chats_money import CHATS_MONEY
 from key_money import KEY_MONEY, WHITE_MONEY, BLACK_MONEY
@@ -38,65 +41,87 @@ def create_filters(key_list, white_list, black_list):
     return key_filter, white_filter, black_filter
 
 
-key_money_filter, white_money_filter, black_money_filter = create_filters(KEY_MONEY, WHITE_MONEY, BLACK_MONEY)
-key_estate_filter, white_estate_filter, black_estate_filter = create_filters(KEY_ESTATE, WHITE_ESTATE, BLACK_ESTATE)
+def message_proceed(message):
 
-chat_filter_money = filters.chat(CHATS_MONEY) & filters.text & key_money_filter
-chat_filter_estate = filters.chat(CHATS_ESTATE) & filters.text & key_estate_filter
+    message_for_bot = ''
+    message_for_bot += f'{message.link}\n'
+    message_for_bot += f'{message.text}\n'
+
+    if message.chat.title:
+        message_for_bot += f'Chat: {message.chat.title}\n'
+    if message.from_user.username:
+        message_for_bot += f'Username: {message.from_user.username}\n'
+    if message.from_user.first_name:
+        message_for_bot += f'First_name: {message.from_user.first_name}\n'
+    if message.from_user.last_name:
+        message_for_bot += f'Last_name: {message.from_user.last_name}\n'
+    if message.from_user.phone_number:
+        message_for_bot += f'Phone_number: {message.from_user.phone_number}\n'
+    return message_for_bot
+
+
+async def send_message_to_chat(bot, chat, message):
+    await bot.send_message(chat, message)
 
 
 def searcher_main():
-    
-    def message_proceed(message):
+    async def find_message(client,
+                           message,
+                           white_filter,
+                           black_filter,
+                           last_message,
+                           bot,
+                           chat):
 
-        message_for_bot = ''
-        message_for_bot += f'{message.link}\n'
-        message_for_bot += f'{message.text}\n'
+        if re.search(white_filter, message.text, re.IGNORECASE):
 
-        if message.chat.title:
-            message_for_bot += f'Chat: {message.chat.title}\n'
-        if message.from_user.username:
-            message_for_bot += f'Username: {message.from_user.username}\n'
-        if message.from_user.first_name:
-            message_for_bot += f'First_name: {message.from_user.first_name}\n'
-        if message.from_user.last_name:
-            message_for_bot += f'Last_name: {message.from_user.last_name}\n'
-        if message.from_user.phone_number:
-            message_for_bot += f'Phone_number: {message.from_user.phone_number}\n'
-        return message_for_bot
-
-    print('* * * Starting... * * *')
-    app = Client(name=APP_NAME, session_string=SESSION_STRING, in_memory=True)
-    last_message = LastMessage()
-    print('* * * STARTED SUCCESSFULLY ! * * *')
-
-    @app.on_message(chat_filter_money)
-    async def find_money(client, message):
-
-        if re.search(white_money_filter, message.text, re.IGNORECASE):
-
-            if re.search(black_money_filter, message.text, re.IGNORECASE):
+            if re.search(black_filter, message.text, re.IGNORECASE):
                 pass
             elif message.text == last_message.last_message_money:
                 pass
             else:
                 last_message.last_message_money = message.text
                 money_message = message_proceed(message)
-                await send_money(money_message)
+                await send_message_to_chat(bot, chat, money_message)
+
+    print('* * * Starting... * * *')
+
+    key_money_filter, white_money_filter, black_money_filter = create_filters(KEY_MONEY, WHITE_MONEY, BLACK_MONEY)
+    key_estate_filter, white_estate_filter, black_estate_filter = create_filters(KEY_ESTATE, WHITE_ESTATE,
+                                                                                       BLACK_ESTATE)
+    chat_filter_money = filters.chat(CHATS_MONEY) & filters.text & key_money_filter
+    chat_filter_estate = filters.chat(CHATS_ESTATE) & filters.text & key_estate_filter
+
+    print('* * * Filters created OK... * * *')
+
+    app = Client(name=APP_NAME, session_string=SESSION_STRING, in_memory=True)
+    print('* * * Pyrogram app started... * * *')
+    bot = Bot(token=BOT_TOKEN)
+    print('* * * Aiogram bot started... * * *')
+    last_message = LastMessage()
+    print('* * * STARTED SUCCESSFULLY ! * * *')
+
+    @app.on_message(chat_filter_money)
+    async def find_money(client, message):
+
+        await find_message(client,
+                           message,
+                           white_money_filter,
+                           black_money_filter,
+                           last_message,
+                           bot,
+                           MONEY_CHAT_ID)
 
     @app.on_message(chat_filter_estate)
     async def find_estate(client, message):
 
-        if re.search(white_estate_filter, message.text, re.IGNORECASE):
-
-            if re.search(black_estate_filter, message.text, re.IGNORECASE):
-                pass
-            elif message.text == last_message.last_message_estate:
-                pass
-            else:
-                last_message.last_message_estate = message.text
-                estate_message = message_proceed(message)
-                await send_estate(estate_message)
+        await find_message(client,
+                           message,
+                           white_estate_filter,
+                           black_estate_filter,
+                           last_message,
+                           bot,
+                           ESTATE_CHAT_ID)
 
     app.run()
     print('* * * Pyrogram App Closed * * *')
