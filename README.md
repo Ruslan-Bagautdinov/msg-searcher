@@ -19,7 +19,7 @@ cd telegram-message-filter-bot
 
 2. Install the required packages:
 ```sh
-   pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 3. Set up your environment variables by creating a .env file in the root directory with the following content:
@@ -38,7 +38,7 @@ ESTATE_CHAT_ID=your_estate_chat_id
 
 4. Run the bot:
 ```sh
-   python searcher.py
+python searcher.py
 ```
 
 ### Configuration
