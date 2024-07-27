@@ -1,14 +1,24 @@
+"""
+This module provides a Trie data structure for efficient pattern matching. It is used to create regex patterns from lists of words.
+"""
+
 import re
 
 
 class Trie:
-    """Regex::Trie in Python. Creates a Trie out of a list of words. The trie can be exported to a Regex pattern.
-    The corresponding Regex should match much faster than a simple Regex union."""
+    """
+    A Trie (prefix tree) implementation for creating regex patterns from a list of words.
+    """
 
     def __init__(self):
         self.data = {}
 
     def add(self, word):
+        """
+        Add a word to the Trie.
+
+        :param word: The word to add.
+        """
         ref = self.data
         for char in word:
             ref[char] = char in ref and ref[char] or {}
@@ -16,12 +26,29 @@ class Trie:
         ref[''] = 1
 
     def dump(self):
+        """
+        Dump the Trie data.
+
+        :return: The Trie data.
+        """
         return self.data
 
     def quote(self, char):
+        """
+        Escape special characters in the character for use in regex.
+
+        :param char: The character to escape.
+        :return: The escaped character.
+        """
         return re.escape(char)
 
     def _pattern(self, p_data):
+        """
+        Recursively generate a regex pattern from the Trie data.
+
+        :param p_data: The Trie data.
+        :return: The regex pattern.
+        """
         data = p_data
         if "" in data and len(data.keys()) == 1:
             return None
@@ -59,4 +86,9 @@ class Trie:
         return result
 
     def pattern(self):
+        """
+        Generate a regex pattern from the Trie.
+
+        :return: The regex pattern.
+        """
         return self._pattern(self.dump())

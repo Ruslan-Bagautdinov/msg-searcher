@@ -1,5 +1,10 @@
-from dotenv import load_dotenv, find_dotenv
+"""
+This module loads configuration settings from environment variables using the `dotenv` library.
+"""
+
 from os import getenv
+
+from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 
